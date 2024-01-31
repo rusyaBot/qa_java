@@ -12,16 +12,24 @@ public class CatTest {
     Cat cat = new Cat(feline);
 
     @Test
-    public void getSound() {
+    public void getSoundTrue() {
         assertEquals("Проверка на Мяу", "Мяу", cat.getSound());
+    }
+
+    @Test
+    public void getSoundFalse() {
         assertNotEquals("Негативная проверка на Мяу", "Гав", cat.getSound());
     }
 
     @Test
-    public void getFood() throws Exception {
+    public void getFoodTrue() throws Exception {
         List<String> expected = List.of("Животные", "Птицы", "Рыба");
-        List<String> notExpected = List.of("Трава", "Различные растения");
         assertEquals("Проверка списка кем питается хищник", expected, cat.getFood());
+    }
+
+    @Test
+    public void getFoodFalse() throws Exception {
+        List<String> notExpected = List.of("Трава", "Различные растения");
         assertNotEquals("Негативная проверка списка кем питается хищник", notExpected, cat.getFood());
     }
 

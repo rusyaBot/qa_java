@@ -7,11 +7,12 @@ import org.junit.runners.Parameterized;
 import static org.junit.Assert.*;
 
 @RunWith(Parameterized.class)
-public class LionTestParameterizes {
+public class LionParamTest {
+    Feline feline = new Feline();
     private final String sex;
     private final boolean hasMane;
 
-    public LionTestParameterizes(String sex, boolean hasMane) {
+    public LionParamTest(String sex, Boolean hasMane) throws Exception {
         this.sex = sex;
         this.hasMane = hasMane;
     }
@@ -20,17 +21,14 @@ public class LionTestParameterizes {
     public static Object[][] getSex() {
         return new Object[][]{
                 {"Самец", true},
-                {"Самка", false},
+                {"Самка", false}
         };
     }
 
     @Test
     public void doesHaveMane() throws Exception {
-        Lion lion = new Lion(sex);
-        try {
-            assertEquals("Проверка пола животного", hasMane, lion.doesHaveMane());
-        } catch (Exception e) {
-        }
+        Lion lion = new Lion(sex, feline);
+        assertEquals(hasMane, lion.doesHaveMane());
     }
 
 }

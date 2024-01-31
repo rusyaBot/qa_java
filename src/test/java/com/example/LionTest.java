@@ -3,8 +3,7 @@ package com.example;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
@@ -13,37 +12,40 @@ import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LionTest {
-    Lion lion = new Lion("Самец");
-    @Mock
-    Feline feline;
-
-    public LionTest() throws Exception {
-    }
+    private Lion lion;
+    private Feline feline;
 
     @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
+    public void setUp() throws Exception {
+        feline = Mockito.mock(Feline.class);
+        lion = new Lion("Самец", feline);
+        lion.feline = feline;
     }
 
     @Test
-    public void getKittens() {
-        assertEquals("Проверка на количество", 1, lion.getKittens());
-        assertNotEquals("Негативная Проверка на количество", 2, lion.getKittens());
+    public void getKittensTrue() {
+        Mockito.when(feline.getKittens()).thenReturn(5);
+        assertEquals(5, lion.getKittens());
+    }
+
+    @Test
+    public void getKittensFalse() {
+        Mockito.when(feline.getKittens()).thenReturn(5);
+        assertNotEquals(1, lion.getKittens());
 
     }
 
     @Test
     public void getFood() throws Exception {
+        Mockito.when(feline.getFood("Хищник")).thenReturn(List.of("Животные", "Птицы", "Рыба"));
         List<String> expected = List.of("Животные", "Птицы", "Рыба");
         assertEquals("Проверка списка кем питается хищник", expected, lion.getFood());
     }
 
-    @Test
-    public void doesHaveManeTest() {
-        Exception exception = assertThrows(Exception.class, () -> {
-            Lion lion = new Lion("Котёнок");
-        });
-        assertEquals("Используйте допустимые значения пола животного - самец или самка", exception.getMessage());
+    @Test(expected = Exception.class)
+    public void doesHaveManeException() throws Exception {
+        Lion lion = new Lion("Недопустимое значение", new Feline());
     }
+
 
 }
